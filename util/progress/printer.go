@@ -7,10 +7,8 @@ import (
 	"os"
 
 	"github.com/containerd/console"
-	"github.com/docker/buildx/util/logutil"
 	"github.com/moby/buildkit/client"
 	"github.com/moby/buildkit/util/progress/progressui"
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -65,10 +63,8 @@ func NewPrinter(ctx context.Context, out console.File, mode string) *Printer {
 				c = cons
 			}
 		}
-		resumeLogs := logutil.Pause(logrus.StandardLogger())
 		// not using shared context to not disrupt display but let is finish reporting errors
 		pw.warnings, pw.err = progressui.DisplaySolveStatus(ctx, "", c, w, statusCh)
-		resumeLogs()
 		close(doneCh)
 	}()
 	return pw
